@@ -1,0 +1,20 @@
+https-portal:
+  image: steveltn/https-portal:1
+  ports:
+    - '80:80'
+    - '443:443'
+  links:
+    - web
+  restart: always
+  environment:
+    DOMAINS: 'example.local -> http://web:80'
+    STAGE: 'local'
+    # WEBSOCKET: 'true'
+    FORCE_RENEW: 'true'
+
+web:
+    image: erikap/ruby-sinatra
+    volumes:
+          - "./app:/usr/src/app"
+    environment:
+          - "MAIN_APP_FILE=my-app.rb"
